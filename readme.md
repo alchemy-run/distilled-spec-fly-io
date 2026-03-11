@@ -1,0 +1,24 @@
+# distilled-spec-fly-io
+
+A git mirror of Fly-io's API spec. The spec is fetched and committed as a JSON file so the repo serves as a versioned snapshot.
+
+The mirror is updated every 24 hours and is designed to be used as a stable git submodule.
+
+## Spec source(s)
+
+- https://docs.machines.dev/spec/openapi3.json
+
+## Usage as a submodule
+
+```sh
+git submodule add https://github.com/alchemy-run/distilled-spec-fly-io.git
+```
+
+## Updating specs
+
+From `.meta/`:
+
+```sh
+bun install
+bun run fetch-specs
+```
