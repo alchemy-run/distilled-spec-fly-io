@@ -3124,7 +3124,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of machines to fetch (max of 1000). If omitted, this is set to 500 by default",
+            "description": "The number of machines to fetch (max of 2000). This limit is advisory. Responses may be shorter, even when more machines remain. If omitted, the maximum is used",
             "schema": {
               "type": "integer"
             }
@@ -5068,7 +5068,19 @@
               "Microsecond",
               "Millisecond",
               "Second",
-              "Minute"
+              "Minute",
+              "Hour",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Hour"
             ]
           }
         }
