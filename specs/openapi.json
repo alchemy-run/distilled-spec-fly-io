@@ -28,6 +28,10 @@
       "description": "This site hosts documentation generated from the Fly.io Machines API OpenAPI specification. Visit our complete [Machines API docs](https://fly.io/docs/machines/api/machines-resource/) for details about using the Machines resource."
     },
     {
+      "name": "TLS Certificates",
+      "description": "This site hosts documentation generated from the Fly.io Machines API OpenAPI specification. Visit our complete [Machines API docs](https://fly.io/docs/machines/api/certificates-resource/) for details about using the TLS Certificates resource.\n"
+    },
+    {
       "name": "Volumes",
       "description": "This site hosts documentation generated from the Fly.io Machines API OpenAPI specification. Visit our complete [Machines API docs](https://fly.io/docs/machines/api/volumes-resource/) for details about using the Volumes resource."
     }
@@ -171,11 +175,20 @@
     "/apps/{app_name}/certificates": {
       "get": {
         "tags": [
-          "Apps"
+          "TLS Certificates"
         ],
         "summary": "List certificates for app",
         "operationId": "App_Certificates_list",
         "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "filter",
             "in": "query",
@@ -218,10 +231,21 @@
     "/apps/{app_name}/certificates/acme": {
       "post": {
         "tags": [
-          "Apps"
+          "TLS Certificates"
         ],
         "summary": "Request ACME certificate",
         "operationId": "App_Certificates_acme_create",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "ACME certificate request",
           "content": {
@@ -261,10 +285,21 @@
     "/apps/{app_name}/certificates/custom": {
       "post": {
         "tags": [
-          "Apps"
+          "TLS Certificates"
         ],
         "summary": "Upload custom certificate",
         "operationId": "App_Certificates_custom_create",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Custom certificate request",
           "content": {
@@ -304,10 +339,30 @@
     "/apps/{app_name}/certificates/{hostname}": {
       "get": {
         "tags": [
-          "Apps"
+          "TLS Certificates"
         ],
         "summary": "Get certificate details",
         "operationId": "App_Certificates_show",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hostname",
+            "in": "path",
+            "description": "Certificate Hostname",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -323,10 +378,30 @@
       },
       "delete": {
         "tags": [
-          "Apps"
+          "TLS Certificates"
         ],
         "summary": "Remove certificate",
         "operationId": "App_Certificates_delete",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hostname",
+            "in": "path",
+            "description": "Certificate Hostname",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "204": {
             "description": "No Content",
@@ -338,10 +413,30 @@
     "/apps/{app_name}/certificates/{hostname}/acme": {
       "delete": {
         "tags": [
-          "Apps"
+          "TLS Certificates"
         ],
         "summary": "Remove ACME certificates",
         "operationId": "App_Certificates_acme_delete",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hostname",
+            "in": "path",
+            "description": "Certificate Hostname",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -359,10 +454,30 @@
     "/apps/{app_name}/certificates/{hostname}/check": {
       "post": {
         "tags": [
-          "Apps"
+          "TLS Certificates"
         ],
         "summary": "Check DNS and re-validate certificate",
         "operationId": "App_Certificates_check",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hostname",
+            "in": "path",
+            "description": "Certificate Hostname",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -380,10 +495,30 @@
     "/apps/{app_name}/certificates/{hostname}/custom": {
       "delete": {
         "tags": [
-          "Apps"
+          "TLS Certificates"
         ],
         "summary": "Remove custom certificate",
         "operationId": "App_Certificates_custom_delete",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hostname",
+            "in": "path",
+            "description": "Certificate Hostname",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -449,6 +584,17 @@
         ],
         "summary": "List IP assignments for app",
         "operationId": "App_IPAssignments_list",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -468,6 +614,17 @@
         ],
         "summary": "Assign new IP address to app",
         "operationId": "App_IPAssignments_create",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Assign IP request",
           "content": {
@@ -501,6 +658,26 @@
         ],
         "summary": "Remove IP assignment from app",
         "operationId": "App_IPAssignments_delete",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ip",
+            "in": "path",
+            "description": "IP address",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "204": {
             "description": "No Content",
@@ -1266,13 +1443,13 @@
           }
         }
       },
-      "patch": {
+      "put": {
         "tags": [
           "Machines"
         ],
-        "summary": "Patch Metadata (set/remove multiple keys)",
+        "summary": "Update Metadata (set/remove multiple keys)",
         "description": "Update multiple metadata keys at once. Null values and empty strings remove keys.\n+ If `machine_version` is provided and no longer matches the current machine version, returns 412 Precondition Failed.",
-        "operationId": "Machines_patch_metadata",
+        "operationId": "Machines_update_metadata",
         "parameters": [
           {
             "name": "app_name",
@@ -1293,6 +1470,17 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Update metadata request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateMetadataRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "204": {
             "description": "No Content",
@@ -1318,17 +1506,18 @@
               }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name": "request"
       }
     },
     "/apps/{app_name}/machines/{machine_id}/metadata/{key}": {
-      "post": {
+      "get": {
         "tags": [
           "Machines"
         ],
-        "summary": "Update Metadata",
-        "description": "Update metadata for a specific machine within an app by providing a metadata key.\n",
-        "operationId": "Machines_update_metadata",
+        "summary": "Get Metadata Value",
+        "description": "Get the value of a specific metadata key",
+        "operationId": "Machines_get_metadata_key",
         "parameters": [
           {
             "name": "app_name",
@@ -1359,6 +1548,76 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/metadataValueResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Machines"
+        ],
+        "summary": "Upsert Metadata Key",
+        "description": "Update metadata for a specific machine within an app by providing a metadata key.\n",
+        "operationId": "Machines_upsert_metadata",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "machine_id",
+            "in": "path",
+            "description": "Machine ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "description": "Metadata Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Upsert metadata key request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/upsertMetadataKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
           "204": {
             "description": "No Content",
             "content": {}
@@ -1373,7 +1632,8 @@
               }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name": "request"
       },
       "delete": {
         "tags": [
@@ -1849,9 +2109,25 @@
             }
           },
           {
-            "name": "instance_id",
+            "name": "version",
             "in": "query",
             "description": "26-character Machine version ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "instance_id",
+            "in": "query",
+            "description": "26-character Machine version ID (deprecated; use version)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from_event_id",
+            "in": "query",
+            "description": "26-character Machine event ID to start waiting after",
             "schema": {
               "type": "string"
             }
@@ -1867,7 +2143,7 @@
           {
             "name": "state",
             "in": "query",
-            "description": "desired state",
+            "description": "desired state(s), supports repeated or comma-separated values",
             "schema": {
               "type": "string",
               "enum": [
@@ -1875,6 +2151,7 @@
                 "stopped",
                 "suspended",
                 "destroyed",
+                "failed",
                 "settled"
               ]
             }
@@ -4697,10 +4974,16 @@
       "WaitMachineResponse": {
         "type": "object",
         "properties": {
+          "event_id": {
+            "type": "string"
+          },
           "ok": {
             "type": "boolean"
           },
           "state": {
+            "type": "string"
+          },
+          "version": {
             "type": "string"
           }
         }
@@ -5056,8 +5339,12 @@
               "Second",
               "Minute",
               "Hour",
-              "minDuration",
-              "maxDuration",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Hour",
               "Nanosecond",
               "Microsecond",
               "Millisecond",
@@ -6133,6 +6420,14 @@
           }
         }
       },
+      "metadataValueResponse": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
       "placement.RegionPlacement": {
         "type": "object",
         "properties": {
@@ -6182,6 +6477,34 @@
           },
           "requires_paid_plan": {
             "type": "boolean"
+          }
+        }
+      },
+      "updateMetadataRequest": {
+        "type": "object",
+        "properties": {
+          "machine_version": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      },
+      "upsertMetadataKeyRequest": {
+        "type": "object",
+        "properties": {
+          "updated_at": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
           }
         }
       }
