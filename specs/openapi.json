@@ -3383,6 +3383,14 @@
             }
           },
           {
+            "name": "summary",
+            "in": "query",
+            "description": "Omit config from responses",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "updated_after",
             "in": "query",
             "description": "Only return machines updated after this time. Timestamp must be in the RFC 3339 format",
@@ -4523,6 +4531,23 @@
           }
         }
       },
+      "MachineOverviewConfig": {
+        "type": "object",
+        "properties": {
+          "guest": {
+            "$ref": "#/components/schemas/fly.MachineGuest"
+          },
+          "image": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "MachineVersion": {
         "type": "object",
         "properties": {
@@ -4542,6 +4567,9 @@
           },
           "app_name": {
             "type": "string"
+          },
+          "config": {
+            "$ref": "#/components/schemas/MachineOverviewConfig"
           },
           "created_at": {
             "type": "string"
@@ -5331,8 +5359,11 @@
               "Second",
               "Minute",
               "Hour",
-              "minDuration",
-              "maxDuration",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
               "Nanosecond",
               "Microsecond",
               "Millisecond",
@@ -5343,24 +5374,7 @@
               "Microsecond",
               "Millisecond",
               "Second",
-              "Minute",
-              "Hour",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Minute",
-              "Hour",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Minute",
-              "Hour"
+              "Minute"
             ]
           }
         }
