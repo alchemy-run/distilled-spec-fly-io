@@ -5364,6 +5364,7 @@
               "Millisecond",
               "Second",
               "Minute",
+              "Hour",
               "Nanosecond",
               "Microsecond",
               "Millisecond",
@@ -5374,7 +5375,18 @@
               "Microsecond",
               "Millisecond",
               "Second",
-              "Minute"
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Hour",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Hour"
             ]
           }
         }
