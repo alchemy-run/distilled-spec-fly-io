@@ -5568,7 +5568,12 @@
               "Millisecond",
               "Second",
               "Minute",
-              "Hour"
+              "Hour",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute"
             ]
           }
         }
@@ -5920,6 +5925,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "max_memory_mb": {
+            "type": "integer"
           },
           "memory_mb": {
             "type": "integer"
