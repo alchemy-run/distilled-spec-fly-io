@@ -5584,6 +5584,14 @@
               "Millisecond",
               "Second",
               "Minute",
+              "Hour",
+              "minDuration",
+              "maxDuration",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
               "Hour"
             ]
           }
