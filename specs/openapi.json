@@ -3558,58 +3558,8 @@
           "Platform"
         ],
         "summary": "Get Regions",
-        "description": "List all regions on the platform with their current Machine capacity.",
+        "description": "List all regions on the platform with their details.",
         "operationId": "Platform_regions_get",
-        "parameters": [
-          {
-            "name": "size",
-            "in": "query",
-            "description": "guest machine size preset. default performance-1x",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "cpu_kind",
-            "in": "query",
-            "description": "guest CPU kind",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "memory_mb",
-            "in": "query",
-            "description": "guest memory in megabytes",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "cpus",
-            "in": "query",
-            "description": "guest CPU count",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "gpus",
-            "in": "query",
-            "description": "guest GPU count",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "gpu_kind",
-            "in": "query",
-            "description": "guest GPU kind",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5561,14 +5511,23 @@
               "Second",
               "Minute",
               "Hour",
-              "minDuration",
-              "maxDuration",
               "Nanosecond",
               "Microsecond",
               "Millisecond",
               "Second",
               "Minute",
-              "Hour"
+              "Hour",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Hour",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute"
             ]
           }
         }
@@ -6568,8 +6527,37 @@
           "regions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/reads.GetCapacityPerRegionRow"
+              "$ref": "#/components/schemas/main.regionRow"
             }
+          }
+        }
+      },
+      "main.regionRow": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "deprecated": {
+            "type": "boolean"
+          },
+          "gateway_available": {
+            "type": "boolean"
+          },
+          "geo_region": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "requires_paid_plan": {
+            "type": "boolean"
           }
         }
       },
@@ -6650,38 +6638,6 @@
         "type": "object",
         "additionalProperties": {
           "type": "integer"
-        }
-      },
-      "reads.GetCapacityPerRegionRow": {
-        "type": "object",
-        "properties": {
-          "capacity": {
-            "type": "integer"
-          },
-          "code": {
-            "type": "string"
-          },
-          "deprecated": {
-            "type": "boolean"
-          },
-          "gateway_available": {
-            "type": "boolean"
-          },
-          "geo_region": {
-            "type": "string"
-          },
-          "latitude": {
-            "type": "number"
-          },
-          "longitude": {
-            "type": "number"
-          },
-          "name": {
-            "type": "string"
-          },
-          "requires_paid_plan": {
-            "type": "boolean"
-          }
         }
       },
       "updateMetadataRequest": {
