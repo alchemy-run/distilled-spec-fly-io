@@ -4725,6 +4725,13 @@
           "state": {
             "type": "string"
           },
+          "type": {
+            "type": "string",
+            "enum": [
+              "local",
+              "cache"
+            ]
+          },
           "updated_at": {
             "type": "string"
           },
@@ -5103,6 +5110,13 @@
           },
           "state": {
             "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "local",
+              "cache"
+            ]
           },
           "zone": {
             "type": "string"
@@ -5513,6 +5527,20 @@
               "Hour",
               "minDuration",
               "maxDuration",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Hour",
+              "minDuration",
+              "maxDuration",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Hour",
               "Nanosecond",
               "Microsecond",
               "Millisecond",
