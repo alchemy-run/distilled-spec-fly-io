@@ -5525,20 +5525,11 @@
               "Second",
               "Minute",
               "Hour",
-              "minDuration",
-              "maxDuration",
               "Nanosecond",
               "Microsecond",
               "Millisecond",
               "Second",
-              "Minute",
-              "Hour",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Minute",
-              "Hour"
+              "Minute"
             ]
           }
         }
