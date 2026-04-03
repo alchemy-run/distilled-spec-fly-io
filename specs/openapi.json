@@ -5529,7 +5529,13 @@
               "Microsecond",
               "Millisecond",
               "Second",
-              "Minute"
+              "Minute",
+              "Nanosecond",
+              "Microsecond",
+              "Millisecond",
+              "Second",
+              "Minute",
+              "Hour"
             ]
           }
         }
