@@ -5533,11 +5533,14 @@
               "Second",
               "Minute",
               "Hour",
+              "minDuration",
+              "maxDuration",
               "Nanosecond",
               "Microsecond",
               "Millisecond",
               "Second",
-              "Minute"
+              "Minute",
+              "Hour"
             ]
           }
         }
