@@ -5533,14 +5533,11 @@
               "Second",
               "Minute",
               "Hour",
-              "minDuration",
-              "maxDuration",
               "Nanosecond",
               "Microsecond",
               "Millisecond",
               "Second",
-              "Minute",
-              "Hour"
+              "Minute"
             ]
           }
         }
@@ -5686,6 +5683,14 @@
           }
         }
       },
+      "fly.MachineCacheDrive": {
+        "type": "object",
+        "properties": {
+          "size_mb": {
+            "type": "integer"
+          }
+        }
+      },
       "fly.MachineCheck": {
         "type": "object",
         "properties": {
@@ -5766,6 +5771,9 @@
           "auto_destroy": {
             "type": "boolean",
             "description": "Optional boolean telling the Machine to destroy itself once it’s complete (default false)"
+          },
+          "cache_drive": {
+            "$ref": "#/components/schemas/fly.MachineCacheDrive"
           },
           "checks": {
             "type": "object",
@@ -6114,9 +6122,6 @@
       "fly.MachineRootfs": {
         "type": "object",
         "properties": {
-          "fs_size_gb": {
-            "type": "integer"
-          },
           "persist": {
             "type": "string",
             "enum": [
