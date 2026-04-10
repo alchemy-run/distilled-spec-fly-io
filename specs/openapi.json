@@ -1790,7 +1790,16 @@
             "in": "query",
             "description": "Unix signal name",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "SIGHUP",
+                "SIGINT",
+                "SIGQUIT",
+                "SIGKILL",
+                "SIGUSR1",
+                "SIGUSR2",
+                "SIGTERM"
+              ]
             }
           }
         ],
@@ -4959,7 +4968,8 @@
               "SIGSEGV",
               "SIGTERM",
               "SIGTRAP",
-              "SIGUSR1"
+              "SIGUSR1",
+              "SIGUSR2"
             ]
           }
         }
@@ -4968,10 +4978,21 @@
         "type": "object",
         "properties": {
           "signal": {
-            "type": "string"
+            "type": "string",
+            "example": "SIGTERM",
+            "enum": [
+              "SIGHUP",
+              "SIGINT",
+              "SIGQUIT",
+              "SIGKILL",
+              "SIGUSR1",
+              "SIGUSR2",
+              "SIGTERM"
+            ]
           },
           "timeout": {
-            "$ref": "#/components/schemas/fly.Duration"
+            "type": "string",
+            "example": "1s"
           }
         }
       },
@@ -5495,49 +5516,6 @@
           }
         }
       },
-      "fly.Duration": {
-        "type": "object",
-        "properties": {
-          "time.Duration": {
-            "type": "integer",
-            "x-enum-varnames": [
-              "minDuration",
-              "maxDuration",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Minute",
-              "Hour",
-              "minDuration",
-              "maxDuration",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Minute",
-              "Hour",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Minute",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Minute",
-              "Hour",
-              "Nanosecond",
-              "Microsecond",
-              "Millisecond",
-              "Second",
-              "Minute",
-              "Hour"
-            ]
-          }
-        }
-      },
       "fly.EnvFrom": {
         "type": "object",
         "properties": {
@@ -5691,13 +5669,9 @@
         "type": "object",
         "properties": {
           "grace_period": {
-            "type": "object",
+            "type": "string",
             "description": "The time to wait after a VM starts before checking its health",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/fly.Duration"
-              }
-            ]
+            "example": "1s"
           },
           "headers": {
             "type": "array",
@@ -5706,13 +5680,9 @@
             }
           },
           "interval": {
-            "type": "object",
+            "type": "string",
             "description": "The time between connectivity checks",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/fly.Duration"
-              }
-            ]
+            "example": "15s"
           },
           "kind": {
             "type": "string",
@@ -5739,13 +5709,9 @@
             "description": "For http checks, whether to use http or https"
           },
           "timeout": {
-            "type": "object",
+            "type": "string",
             "description": "The maximum time a connection can take before being reported as failing its health check",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/fly.Duration"
-              }
-            ]
+            "example": "2s"
           },
           "tls_server_name": {
             "type": "string",
@@ -6197,13 +6163,9 @@
         "type": "object",
         "properties": {
           "grace_period": {
-            "type": "object",
+            "type": "string",
             "description": "The time to wait after a VM starts before checking its health",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/fly.Duration"
-              }
-            ]
+            "example": "1s"
           },
           "headers": {
             "type": "array",
@@ -6212,13 +6174,9 @@
             }
           },
           "interval": {
-            "type": "object",
+            "type": "string",
             "description": "The time between connectivity checks",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/fly.Duration"
-              }
-            ]
+            "example": "15s"
           },
           "method": {
             "type": "string",
@@ -6237,13 +6195,9 @@
             "description": "For http checks, whether to use http or https"
           },
           "timeout": {
-            "type": "object",
+            "type": "string",
             "description": "The maximum time a connection can take before being reported as failing its health check",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/fly.Duration"
-              }
-            ]
+            "example": "2s"
           },
           "tls_server_name": {
             "type": "string",
@@ -6332,10 +6286,20 @@
         "type": "object",
         "properties": {
           "signal": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "SIGHUP",
+              "SIGINT",
+              "SIGQUIT",
+              "SIGKILL",
+              "SIGUSR1",
+              "SIGUSR2",
+              "SIGTERM"
+            ]
           },
           "timeout": {
-            "$ref": "#/components/schemas/fly.Duration"
+            "type": "string",
+            "example": "10s"
           }
         }
       },
