@@ -3410,7 +3410,7 @@
           {
             "name": "cursor",
             "in": "query",
-            "description": "Pagination cursor from previous response (takes precedence over updated_after)",
+            "description": "Pagination cursor from previous response (takes precedence over updated_after). Note that there is no guarantee that all machines returned by this endpoint are sorted by their updated_at fields. Pagination may reveal machines older than the last updated_at.",
             "schema": {
               "type": "string"
             }
@@ -3418,7 +3418,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of machines to fetch (max of 2000). This limit is advisory. Responses may be shorter, even when more machines remain. If omitted, the maximum is used",
+            "description": "The number of machines to fetch (max of 1000). This limit is advisory. Responses may be shorter, or even empty, even when more machines remain. If omitted, the maximum is used",
             "schema": {
               "type": "integer"
             }
@@ -4649,6 +4649,12 @@
       "OrgMachinesResponse": {
         "type": "object",
         "properties": {
+          "error_regions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "last_machine_id": {
             "type": "string"
           },
