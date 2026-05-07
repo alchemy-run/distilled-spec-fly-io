@@ -1194,8 +1194,8 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -1444,6 +1444,72 @@
         }
       },
       "put": {
+        "tags": [
+          "Machines"
+        ],
+        "summary": "Update Metadata (set/remove multiple keys)",
+        "description": "Update multiple metadata keys at once. Null values and empty strings remove keys.\n+ If `machine_version` is provided and no longer matches the current machine version, returns 412 Precondition Failed.",
+        "operationId": "Machines_update_metadata",
+        "parameters": [
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "machine_id",
+            "in": "path",
+            "description": "Machine ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update metadata request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateMetadataRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      },
+      "patch": {
         "tags": [
           "Machines"
         ],
@@ -3583,42 +3649,20 @@
         }
       }
     },
-    "/tokens/kms": {
+    "/tokens/authenticate": {
       "post": {
         "tags": [
           "Tokens"
         ],
-        "summary": "Request a Petsem token for accessing KMS",
-        "description": "This site hosts documentation generated from the Fly.io Machines API OpenAPI specification. Visit our complete [Machines API docs](https://fly.io/docs/machines/api/apps-resource/) for details about using the Apps resource.",
-        "operationId": "Tokens_request_Kms",
-        "responses": {
-          "200": {
-            "description": "KMS token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/tokens/oidc": {
-      "post": {
-        "tags": [
-          "Tokens"
-        ],
-        "summary": "Request an OIDC token",
-        "description": "Request an Open ID Connect token for your machine. Customize the audience claim with the `aud` parameter. This returns a JWT token. Learn more about [using OpenID Connect](/docs/reference/openid-connect/) on Fly.io.\n",
-        "operationId": "Tokens_request_OIDC",
+        "summary": "Authenticate token header",
+        "description": "Verify a token header without checking resource access.",
+        "operationId": "Tokens_authenticate",
         "requestBody": {
-          "description": "Optional request body",
+          "description": "Authenticate token request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOIDCTokenRequest"
+                "$ref": "#/components/schemas/authenticateTokenRequest"
               }
             }
           },
@@ -3626,11 +3670,14 @@
         },
         "responses": {
           "200": {
-            "description": "OIDC token",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/root.VerifiedToken"
+                  }
                 }
               }
             }
@@ -3649,13 +3696,67 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/v1/tokens/current": {
+    "/tokens/authorize": {
+      "post": {
+        "tags": [
+          "Tokens"
+        ],
+        "summary": "Authorize token for resource access",
+        "description": "Verify a token header and validate it against a requested access scope.",
+        "operationId": "Tokens_authorize",
+        "requestBody": {
+          "description": "Authorize token request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/authorizeTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authorizeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/tokens/current": {
       "get": {
         "tags": [
           "Tokens"
         ],
         "summary": "Get Current Token Information",
-        "description": "Get information about the current macaroon token(s), including organizations, apps, and whether each token is from a user or machine",
+        "description": "Get information about the current macaroon token(s), including organizations, apps, user identity hashes, and machine restrictions",
         "operationId": "CurrentToken_show",
         "responses": {
           "200": {
@@ -3689,6 +3790,72 @@
             }
           }
         }
+      }
+    },
+    "/tokens/kms": {
+      "post": {
+        "tags": [
+          "Tokens"
+        ],
+        "summary": "Request a Petsem token for accessing KMS",
+        "description": "This site hosts documentation generated from the Fly.io Machines API OpenAPI specification. Visit our complete [Machines API docs](https://fly.io/docs/machines/api/apps-resource/) for details about using the Apps resource.",
+        "operationId": "Tokens_request_Kms",
+        "responses": {
+          "200": {
+            "description": "KMS token",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tokens/oidc": {
+      "post": {
+        "tags": [
+          "Tokens"
+        ],
+        "summary": "Request an OIDC token",
+        "description": "Request an Open ID Connect token for your machine. Customize the audience claim with the `aud` parameter. This returns a JWT token. Learn more about [using OpenID Connect](/docs/reference/openid-connect/) on Fly.io.\n",
+        "operationId": "Tokens_request_OIDC",
+        "requestBody": {
+          "description": "Optional request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOIDCTokenRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OIDC token",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
       }
     }
   },
@@ -5213,6 +5380,36 @@
           }
         }
       },
+      "authenticateTokenRequest": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "type": "string"
+          }
+        }
+      },
+      "authorizeResponse": {
+        "type": "object",
+        "properties": {
+          "access": {
+            "$ref": "#/components/schemas/flyio.Access"
+          },
+          "verified_token": {
+            "$ref": "#/components/schemas/root.VerifiedToken"
+          }
+        }
+      },
+      "authorizeTokenRequest": {
+        "type": "object",
+        "properties": {
+          "access": {
+            "$ref": "#/components/schemas/main.TokenAccess"
+          },
+          "header": {
+            "type": "string"
+          }
+        }
+      },
       "createAcmeCertificateRequest": {
         "type": "object",
         "properties": {
@@ -6386,6 +6583,59 @@
           }
         }
       },
+      "flyio.Access": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/resset.Action"
+          },
+          "app_feature": {
+            "type": "string"
+          },
+          "appid": {
+            "type": "integer"
+          },
+          "cluster": {
+            "type": "string"
+          },
+          "command": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "feature": {
+            "type": "string"
+          },
+          "machine": {
+            "type": "string"
+          },
+          "machine_feature": {
+            "type": "string"
+          },
+          "mutation": {
+            "type": "string"
+          },
+          "orgid": {
+            "type": "integer"
+          },
+          "sourceApp": {
+            "type": "string"
+          },
+          "sourceMachine": {
+            "type": "string"
+          },
+          "sourceOrganization": {
+            "type": "string"
+          },
+          "storage_object": {
+            "type": "string"
+          },
+          "volume": {
+            "type": "string"
+          }
+        }
+      },
       "listCertificatesResponse": {
         "type": "object",
         "properties": {
@@ -6411,6 +6661,98 @@
             "items": {
               "$ref": "#/components/schemas/IPAssignment"
             }
+          }
+        }
+      },
+      "macaroon.CaveatSet": {
+        "type": "object",
+        "properties": {
+          "caveats": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "macaroon.Nonce": {
+        "type": "object",
+        "properties": {
+          "kid": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "proof": {
+            "type": "boolean"
+          },
+          "rnd": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "main.TokenAccess": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "object",
+            "description": "Action is the action being taken on the specified resource. This is the\ncombination of individual action characters (e.g \"rw\")\n  - r: read\n  - w: write\n  - c: create\n  - d: delete\n  - C: control",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/resset.Action"
+              }
+            ]
+          },
+          "app_feature": {
+            "type": "string",
+            "description": "AppFeature is a named set of functionality associated with the app. If\nthis is specified, the AppName field must be set.\n  - images: images in the fly.io registry"
+          },
+          "app_name": {
+            "type": "string",
+            "description": "AppName is the name of the app being accessed."
+          },
+          "command": {
+            "type": "array",
+            "description": "Command is the command being executed on a machine. If this is specified,\nthe Machine must be set.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "machine_feature": {
+            "type": "string",
+            "description": "MachineFeature is a named set of functionality associated with the\nmachine. If this is specified, the Machine field must be set.\n  - metadata: machine metadata service\n  - oidc: OIDC tokens\n  - kmstoken: Petsem tokens for KMS access"
+          },
+          "machine_id": {
+            "type": "string",
+            "description": "MachineID is the ID of the machine being accessed (e.g. 7811701f564258)."
+          },
+          "mutation": {
+            "type": "string",
+            "description": "Mutation is the GraphQL mutation being performed."
+          },
+          "org_feature": {
+            "type": "string",
+            "description": "OrgFeature is a named set of functionality associated with the\norganization. If this is specified, the OrgSlug field must be set.\n  - wg: WireGuard peers\n  - builder: remote builders\n  - addon: addons\n  - membership: organization membership\n  - billing: billing\n  - litefs-cloud: LiteFS Cloud\n  - authentication: authentication settings"
+          },
+          "org_slug": {
+            "type": "string",
+            "description": "OrgSlug is the slug of the organization being accessed."
+          },
+          "source_machine": {
+            "type": "string",
+            "description": "SourceMachine is the machine ID of the actor attempting access."
+          },
+          "storage_object": {
+            "type": "string",
+            "description": "StorageObject is the storage object being accessed. If this is specified,\nthe OrgSlug must be set."
+          },
+          "volume_id": {
+            "type": "string",
+            "description": "VolumeID is the encoded ID of the volume being accessed (e.g.\nvol_r1p6pln1k9m9j7zr)."
           }
         }
       },
@@ -6622,6 +6964,47 @@
         "type": "object",
         "additionalProperties": {
           "type": "integer"
+        }
+      },
+      "resset.Action": {
+        "type": "integer",
+        "enum": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          31,
+          0
+        ],
+        "x-enum-varnames": [
+          "ActionRead",
+          "ActionWrite",
+          "ActionCreate",
+          "ActionDelete",
+          "ActionControl",
+          "ActionAll",
+          "ActionNone"
+        ]
+      },
+      "root.VerifiedToken": {
+        "type": "object",
+        "properties": {
+          "caveats": {
+            "$ref": "#/components/schemas/macaroon.CaveatSet"
+          },
+          "header": {
+            "type": "string"
+          },
+          "nonce": {
+            "$ref": "#/components/schemas/macaroon.Nonce"
+          },
+          "permission_token": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
         }
       },
       "updateMetadataRequest": {
