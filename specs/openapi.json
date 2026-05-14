@@ -4789,10 +4789,6 @@
           "id": {
             "type": "string"
           },
-          "instance_id": {
-            "type": "string",
-            "description": "Deprecated: use Version."
-          },
           "name": {
             "type": "string"
           },
