@@ -4250,9 +4250,6 @@
           "lease_ttl": {
             "type": "integer"
           },
-          "lsvd": {
-            "type": "boolean"
-          },
           "min_secrets_version": {
             "type": "integer"
           },
@@ -5182,9 +5179,6 @@
           },
           "lease_ttl": {
             "type": "integer"
-          },
-          "lsvd": {
-            "type": "boolean"
           },
           "min_secrets_version": {
             "type": "integer"
