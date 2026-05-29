@@ -6014,6 +6014,9 @@
             "type": "string",
             "description": "Deprecated: use Guest instead"
           },
+          "spot": {
+            "$ref": "#/components/schemas/fly.MachineSpot"
+          },
           "standbys": {
             "type": "array",
             "description": "Standbys enable a machine to be a standby for another. In the event of a hardware failure,\nthe standby machine will be started.",
@@ -6417,6 +6420,15 @@
           },
           "type": {
             "type": "string"
+          }
+        }
+      },
+      "fly.MachineSpot": {
+        "type": "object",
+        "properties": {
+          "max_price_fraction": {
+            "type": "number",
+            "description": "MaxPriceFraction is the maximum fraction of the full Machine price you will pay for this Machine. Range: (0, 1.0]"
           }
         }
       },
