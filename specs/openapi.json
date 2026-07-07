@@ -4644,6 +4644,9 @@
           "config": {
             "$ref": "#/components/schemas/fly.MachineConfig"
           },
+          "cordoned": {
+            "type": "boolean"
+          },
           "created_at": {
             "type": "string"
           },
