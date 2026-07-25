@@ -34,6 +34,10 @@
     {
       "name": "Volumes",
       "description": "This site hosts documentation generated from the Fly.io Machines API OpenAPI specification. Visit our complete [Machines API docs](https://fly.io/docs/machines/api/volumes-resource/) for details about using the Volumes resource."
+    },
+    {
+      "name": "Postgres Clusters",
+      "description": "Create and manage Postgres clusters, including databases, users, extensions, backups, and app attachments."
     }
   ],
   "paths": {
@@ -3665,6 +3669,1441 @@
         }
       }
     },
+    "/postgres": {
+      "get": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "List Postgres Clusters",
+        "description": "List Managed Postgres clusters for an organization.",
+        "operationId": "Postgres_list",
+        "parameters": [
+          {
+            "name": "org_slug",
+            "in": "query",
+            "description": "Fly Organization Slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include_deleted",
+            "in": "query",
+            "description": "Include deleted clusters",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/listPostgresClustersResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "include_deleted must be true or false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Create Postgres Cluster",
+        "description": "Create a Managed Postgres cluster for the organization named in the request body. Provisioning is asynchronous, and a name is generated when one is not supplied.",
+        "operationId": "Postgres_create",
+        "requestBody": {
+          "description": "Cluster details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createPostgresClusterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Cluster accepted for provisioning",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/showPostgresClusterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Creation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid attributes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}": {
+      "get": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Get Postgres Cluster",
+        "description": "Get details of a specific Managed Postgres cluster.",
+        "operationId": "Postgres_show",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/showPostgresClusterResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Delete Postgres Cluster",
+        "description": "Delete a Managed Postgres cluster. The cluster is marked for deletion and removed asynchronously.",
+        "operationId": "Postgres_delete",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {}
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "'This cluster has been deleted' or 'This cluster is being deleted'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postgres/{postgres_cluster_id}/attachments": {
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Attach Cluster to App",
+        "description": "Attach a specific cluster to a Fly app. The attachment is created if it does not already exist.",
+        "operationId": "Postgres_attachments_create",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Attachment details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createPostgresAttachmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Cluster was already attached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createPostgresAttachmentResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Attachment created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createPostgresAttachmentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "'Cluster not found' for the cluster; 'App not found' for the app",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "'This cluster has been deleted' or 'This cluster is being deleted'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}/attachments/{app_name}": {
+      "delete": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Detach Cluster from App",
+        "description": "Detach a specific cluster from a Fly app.",
+        "operationId": "Postgres_attachments_delete",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "app_name",
+            "in": "path",
+            "description": "Fly App Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "404": {
+            "description": "'Cluster not found' for the cluster; 'App not found' for the app; 'Attachment not found' for the attachment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "'This cluster has been deleted' or 'This cluster is being deleted'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postgres/{postgres_cluster_id}/backups": {
+      "get": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "List Backups",
+        "description": "List all backups associated with a specific cluster.",
+        "operationId": "Postgres_backups_list",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/listPostgresBackupsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Create Backup",
+        "description": "Create a backup for a specific cluster. The backup runs asynchronously and is rejected if one is already in progress.",
+        "operationId": "Postgres_backups_create",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Backup details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createPostgresBackupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {}
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A backup is currently running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}/databases": {
+      "get": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "List Databases",
+        "description": "List all databases within a specific cluster.",
+        "operationId": "Postgres_databases_list",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/listPostgresDatabasesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Create Database",
+        "description": "Create a database within a specific cluster.",
+        "operationId": "Postgres_databases_create",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Database details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createPostgresDatabaseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postgresDatabaseResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Database name is reserved, a system database, or malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "name is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}/databases/{database_name}": {
+      "delete": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Drop Database",
+        "description": "Delete a specific database within a cluster, along with objects that depend on it.",
+        "operationId": "Postgres_databases_delete",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "database_name",
+            "in": "path",
+            "description": "Database Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postgresDatabaseResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Database name is reserved, a system database, or malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "'Cluster not found' for the cluster; 'Database not found' for the database",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postgres/{postgres_cluster_id}/databases/{database_name}/extensions": {
+      "get": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "List Extensions",
+        "description": "List all extensions available within a specific database, indicating which are installed.",
+        "operationId": "Postgres_extensions_list",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "database_name",
+            "in": "path",
+            "description": "Database Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/listPostgresExtensionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Database name is malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Enable Extension",
+        "description": "Enable a Postgres extension within a specific database. PostGIS extensions require a PostGIS-enabled cluster.",
+        "operationId": "Postgres_extensions_enable",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "database_name",
+            "in": "path",
+            "description": "Database Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Extension details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/enablePostgresExtensionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "400": {
+            "description": "Database name is malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "'PostGIS is not enabled on this cluster' or 'Extension <name> is already installed in schema <schema>'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unknown or unsupported extension",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}/databases/{database_name}/extensions/{extension_name}": {
+      "delete": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Disable Extension",
+        "description": "Disable a specific Postgres extension within a database, optionally dropping objects that depend on it. System extensions cannot be disabled.",
+        "operationId": "Postgres_extensions_disable",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "database_name",
+            "in": "path",
+            "description": "Database Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "extension_name",
+            "in": "path",
+            "description": "Extension Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "force",
+            "in": "query",
+            "description": "Also drop objects that depend on the extension",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "400": {
+            "description": "'System extensions cannot be disabled' or 'Database name is malformed'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid extension name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postgres/{postgres_cluster_id}/fork": {
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Fork Cluster to New Cluster",
+        "description": "Fork a ready Managed Postgres cluster into a new cluster that inherits the source's settings. The source cluster is left unchanged, and the fork is provisioned asynchronously.",
+        "operationId": "Postgres_fork",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Fork details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/forkPostgresClusterRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "New cluster provisioned from the fork",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/showPostgresClusterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fork failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The source cluster is not ready to be forked yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "'This cluster has been deleted' or 'This cluster is being deleted'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid attributes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}/restore": {
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Restore Backup to New Cluster",
+        "description": "Restore a backup into a new Managed Postgres cluster. The source cluster is left unchanged, and a new cluster is provisioned from the specified backup.",
+        "operationId": "Postgres_restore",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Restore details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/restorePostgresClusterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "New cluster provisioned from the backup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/showPostgresClusterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Restore failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "'Cluster not found' for the cluster; 'Backup <backup_id> not found for cluster <postgres_cluster_id>' for the backup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "backup_id is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}/users": {
+      "get": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "List Users",
+        "description": "List all Postgres users within a specific cluster.",
+        "operationId": "Postgres_users_list",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/listPostgresUsersResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Create User",
+        "description": "Create a Postgres user within a specific cluster. Fetch the generated password from the credentials endpoint.",
+        "operationId": "Postgres_users_create",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "User details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createPostgresUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createPostgresUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Username is reserved, a system user, or malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cluster not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "username or role missing, or role invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}/users/{username}": {
+      "delete": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Delete User",
+        "description": "Delete a specific Postgres user within a cluster.",
+        "operationId": "Postgres_users_delete",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Postgres User Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "400": {
+            "description": "Username is reserved, a system user, or malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "'Cluster not found' for the cluster; 'User not found' for the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Update User Role",
+        "description": "Update a specific Postgres user's role within a cluster.",
+        "operationId": "Postgres_users_update_role",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Postgres User Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Role details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updatePostgresUserRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "400": {
+            "description": "Username is reserved, a system user, or malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "'Cluster not found' for the cluster; 'User not found' for the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "role missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
+    "/postgres/{postgres_cluster_id}/users/{username}/credentials": {
+      "get": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Get User Credentials",
+        "description": "Get the connection credentials for a specific Postgres user within a cluster.",
+        "operationId": "Postgres_users_credentials",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Postgres User Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getPostgresUserCredentialsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Username is reserved, a system user, or malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "'Cluster not found' for the cluster; 'User not found' for the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postgres/{postgres_cluster_id}/users/{username}/rotate_password": {
+      "post": {
+        "tags": [
+          "Postgres Clusters"
+        ],
+        "summary": "Rotate User Password",
+        "description": "Rotate a specific Postgres user's password within a cluster, optionally terminating the user's existing sessions.",
+        "operationId": "Postgres_users_rotate_password",
+        "parameters": [
+          {
+            "name": "postgres_cluster_id",
+            "in": "path",
+            "description": "Managed Postgres Cluster ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Postgres User Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Password rotation details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rotatePostgresPasswordRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Rotated user credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/rotatePostgresPasswordResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Username is reserved, a system user, or malformed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "'Cluster not found' for the cluster; 'User not found' for the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "'This cluster has been deleted' or 'This cluster is being deleted'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "kill_sessions must be true or false",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostgresErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "request"
+      }
+    },
     "/tokens/authenticate": {
       "post": {
         "tags": [
@@ -4957,6 +6396,19 @@
           }
         }
       },
+      "OrganizationRef": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Organization name."
+          },
+          "slug": {
+            "type": "string",
+            "description": "Organization slug."
+          }
+        }
+      },
       "OwnershipVerification": {
         "type": "object",
         "properties": {
@@ -4968,6 +6420,378 @@
           },
           "org_value": {
             "type": "string"
+          }
+        }
+      },
+      "PostgresAttachedApp": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Attached Fly app name."
+          }
+        }
+      },
+      "PostgresAttachment": {
+        "type": "object",
+        "properties": {
+          "app_name": {
+            "type": "string",
+            "description": "Attached Fly app name."
+          },
+          "attached_at": {
+            "type": "string",
+            "description": "RFC 3339 timestamp when the attachment was created."
+          },
+          "postgres_cluster_id": {
+            "type": "string",
+            "description": "Cluster ID the app is attached to."
+          }
+        }
+      },
+      "PostgresBackup": {
+        "type": "object",
+        "properties": {
+          "finished_at": {
+            "type": "string",
+            "description": "RFC 3339 stop timestamp."
+          },
+          "id": {
+            "type": "string",
+            "description": "Backup ID."
+          },
+          "size_bytes": {
+            "type": "integer",
+            "description": "Backup size in bytes."
+          },
+          "started_at": {
+            "type": "string",
+            "description": "RFC 3339 start timestamp."
+          },
+          "status": {
+            "type": "string",
+            "description": "Backup status.",
+            "example": "completed"
+          },
+          "type": {
+            "type": "string",
+            "description": "Backup type.",
+            "enum": [
+              "full",
+              "incr",
+              "diff"
+            ]
+          }
+        }
+      },
+      "PostgresCluster": {
+        "type": "object",
+        "properties": {
+          "attached_apps": {
+            "type": "array",
+            "description": "Apps attached to the cluster.",
+            "items": {
+              "$ref": "#/components/schemas/PostgresAttachedApp"
+            }
+          },
+          "cpu_kind": {
+            "type": "string",
+            "description": "CPU class.",
+            "example": "shared",
+            "enum": [
+              "shared",
+              "performance"
+            ]
+          },
+          "cpus": {
+            "type": "integer",
+            "description": "vCPUs per node.",
+            "example": 2
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC 3339 creation timestamp."
+          },
+          "disk_size_gb": {
+            "type": "integer",
+            "description": "Disk size in gigabytes.",
+            "example": 10
+          },
+          "endpoints": {
+            "type": "object",
+            "description": "Connection endpoints. Populated once the cluster is ready.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PostgresClusterEndpoints"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "Cluster ID."
+          },
+          "memory_mb": {
+            "type": "integer",
+            "description": "Memory per node in megabytes.",
+            "example": 1024
+          },
+          "name": {
+            "type": "string",
+            "description": "Cluster name."
+          },
+          "organization": {
+            "$ref": "#/components/schemas/OrganizationRef"
+          },
+          "pg_major_version": {
+            "type": "string",
+            "description": "Postgres major version.",
+            "example": "17",
+            "enum": [
+              "16",
+              "17"
+            ]
+          },
+          "plan": {
+            "type": "string",
+            "description": "Plan slug.",
+            "example": "basic",
+            "enum": [
+              "basic",
+              "starter",
+              "launch",
+              "scale",
+              "Performance"
+            ]
+          },
+          "postgis_enabled": {
+            "type": "boolean",
+            "description": "Whether PostGIS support is enabled."
+          },
+          "region": {
+            "type": "string",
+            "description": "Fly region code.",
+            "example": "iad"
+          },
+          "replicas": {
+            "type": "integer",
+            "description": "Number of replicas.",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "description": "Current lifecycle status.",
+            "example": "ready",
+            "enum": [
+              "creating",
+              "initializing",
+              "ready",
+              "deleting",
+              "deleted",
+              "failed"
+            ]
+          }
+        }
+      },
+      "PostgresClusterEndpoints": {
+        "type": "object",
+        "properties": {
+          "primary": {
+            "type": "object",
+            "description": "Endpoints for connecting to the primary node.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PostgresNodeEndpoints"
+              }
+            ]
+          }
+        }
+      },
+      "PostgresClusterSummary": {
+        "type": "object",
+        "properties": {
+          "attached_apps": {
+            "type": "array",
+            "description": "Apps attached to the cluster.",
+            "items": {
+              "$ref": "#/components/schemas/PostgresAttachedApp"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC 3339 creation timestamp."
+          },
+          "deleted_at": {
+            "type": "string",
+            "description": "RFC 3339 deletion timestamp; present for deleted clusters."
+          },
+          "id": {
+            "type": "string",
+            "description": "Cluster ID."
+          },
+          "name": {
+            "type": "string",
+            "description": "Cluster name."
+          },
+          "plan": {
+            "type": "string",
+            "description": "Plan slug.",
+            "example": "basic",
+            "enum": [
+              "basic",
+              "starter",
+              "launch",
+              "scale",
+              "Performance"
+            ]
+          },
+          "region": {
+            "type": "string",
+            "description": "Fly region code.",
+            "example": "iad"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current lifecycle status.",
+            "example": "ready",
+            "enum": [
+              "creating",
+              "initializing",
+              "ready",
+              "deleting",
+              "deleted",
+              "failed"
+            ]
+          }
+        }
+      },
+      "PostgresDatabase": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Database name."
+          }
+        }
+      },
+      "PostgresEndpoint": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "Hostname to connect to."
+          },
+          "port": {
+            "type": "integer",
+            "description": "TCP port."
+          }
+        }
+      },
+      "PostgresErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Human-readable error message."
+          }
+        }
+      },
+      "PostgresExtension": {
+        "type": "object",
+        "properties": {
+          "default_version": {
+            "type": "string",
+            "description": "Default version installed when enabled."
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable description."
+          },
+          "installed": {
+            "type": "object",
+            "description": "Installation details, or null when the extension is not installed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PostgresInstalledExtension"
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Extension name.",
+            "example": "citext"
+          },
+          "system": {
+            "type": "boolean",
+            "description": "Whether this is a system extension that cannot be disabled."
+          }
+        }
+      },
+      "PostgresInstalledExtension": {
+        "type": "object",
+        "properties": {
+          "schema": {
+            "type": "string",
+            "description": "Schema the extension is installed into.",
+            "example": "public"
+          },
+          "version": {
+            "type": "string",
+            "description": "Installed version.",
+            "example": "1.0"
+          }
+        }
+      },
+      "PostgresNodeEndpoints": {
+        "type": "object",
+        "properties": {
+          "direct": {
+            "type": "object",
+            "description": "Unpooled connection to the cluster node.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PostgresEndpoint"
+              }
+            ]
+          },
+          "pooler": {
+            "type": "object",
+            "description": "Pooled connection to the cluster node (through PgBouncer).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PostgresEndpoint"
+              }
+            ]
+          }
+        }
+      },
+      "PostgresUser": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "User role.",
+            "enum": [
+              "schema_admin",
+              "writer",
+              "reader"
+            ]
+          },
+          "username": {
+            "type": "string",
+            "description": "User name."
+          }
+        }
+      },
+      "PostgresUserCredentials": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "description": "User password."
+          },
+          "username": {
+            "type": "string",
+            "description": "User name."
           }
         }
       },
@@ -5458,6 +7282,152 @@
           }
         }
       },
+      "createPostgresAttachmentRequest": {
+        "required": [
+          "app_name"
+        ],
+        "type": "object",
+        "properties": {
+          "app_name": {
+            "type": "string",
+            "description": "Name of the Fly app to attach."
+          }
+        }
+      },
+      "createPostgresAttachmentResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PostgresAttachment"
+          }
+        }
+      },
+      "createPostgresBackupRequest": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Backup type.",
+            "example": "full",
+            "enum": [
+              "full",
+              "incr",
+              "diff"
+            ]
+          }
+        }
+      },
+      "createPostgresClusterRequest": {
+        "required": [
+          "org_slug",
+          "plan",
+          "region"
+        ],
+        "type": "object",
+        "properties": {
+          "disk_size_gb": {
+            "maximum": 1000,
+            "minimum": 10,
+            "type": "integer",
+            "description": "Disk size in gigabytes.",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "description": "Name for the cluster. A name is generated when omitted."
+          },
+          "org_slug": {
+            "type": "string",
+            "description": "Slug of the organization that will own the cluster.",
+            "example": "my-org"
+          },
+          "pg_major_version": {
+            "type": "string",
+            "description": "Postgres major version.",
+            "example": "17",
+            "enum": [
+              "16",
+              "17"
+            ]
+          },
+          "plan": {
+            "type": "string",
+            "description": "Plan slug selecting CPU, memory, and disk sizing.",
+            "example": "basic",
+            "enum": [
+              "basic",
+              "starter",
+              "launch",
+              "scale",
+              "Performance"
+            ]
+          },
+          "pool_mode": {
+            "type": "string",
+            "description": "Connection pooler mode.",
+            "example": "transaction",
+            "enum": [
+              "session",
+              "transaction"
+            ]
+          },
+          "postgis_enabled": {
+            "type": "boolean",
+            "description": "Enable PostGIS support, required to later enable PostGIS extensions."
+          },
+          "region": {
+            "type": "string",
+            "description": "Fly region code where the cluster's primary runs.",
+            "example": "iad"
+          }
+        }
+      },
+      "createPostgresDatabaseRequest": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the database to create."
+          }
+        }
+      },
+      "createPostgresUserRequest": {
+        "required": [
+          "role",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Role to grant the user.",
+            "example": "writer",
+            "enum": [
+              "schema_admin",
+              "writer",
+              "reader"
+            ]
+          },
+          "username": {
+            "type": "string",
+            "description": "Name for the new user."
+          }
+        }
+      },
+      "createPostgresUserResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PostgresUser"
+          }
+        }
+      },
       "destroyCustomCertificateResponse": {
         "type": "object",
         "properties": {
@@ -5499,6 +7469,27 @@
           },
           "warning": {
             "type": "string"
+          }
+        }
+      },
+      "enablePostgresExtensionRequest": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "create_schema": {
+            "type": "boolean",
+            "description": "Create the schema first if it does not exist."
+          },
+          "name": {
+            "type": "string",
+            "description": "Extension to enable.",
+            "example": "citext"
+          },
+          "schema": {
+            "type": "string",
+            "description": "Schema to install the extension into. Defaults to the database's default schema."
           }
         }
       },
@@ -6674,6 +8665,23 @@
           }
         }
       },
+      "forkPostgresClusterRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name for the forked cluster. Defaults to the source name with a -fork suffix."
+          }
+        }
+      },
+      "getPostgresUserCredentialsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PostgresUserCredentials"
+          }
+        }
+      },
       "listCertificatesResponse": {
         "type": "object",
         "properties": {
@@ -6698,6 +8706,61 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/IPAssignment"
+            }
+          }
+        }
+      },
+      "listPostgresBackupsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostgresBackup"
+            }
+          }
+        }
+      },
+      "listPostgresClustersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostgresClusterSummary"
+            }
+          }
+        }
+      },
+      "listPostgresDatabasesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostgresDatabase"
+            }
+          }
+        }
+      },
+      "listPostgresExtensionsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostgresExtension"
+            }
+          }
+        }
+      },
+      "listPostgresUsersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostgresUser"
             }
           }
         }
@@ -7004,6 +9067,14 @@
           "type": "integer"
         }
       },
+      "postgresDatabaseResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PostgresDatabase"
+          }
+        }
+      },
       "resset.Action": {
         "type": "integer",
         "enum": [
@@ -7025,6 +9096,18 @@
           "ActionNone"
         ]
       },
+      "restorePostgresClusterRequest": {
+        "required": [
+          "backup_id"
+        ],
+        "type": "object",
+        "properties": {
+          "backup_id": {
+            "type": "string",
+            "description": "Backup label to restore from, as returned by the backups list."
+          }
+        }
+      },
       "root.VerifiedToken": {
         "type": "object",
         "properties": {
@@ -7045,6 +9128,31 @@
           }
         }
       },
+      "rotatePostgresPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "kill_sessions": {
+            "type": "boolean",
+            "description": "Terminate the user's existing sessions after rotating."
+          }
+        }
+      },
+      "rotatePostgresPasswordResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PostgresUserCredentials"
+          }
+        }
+      },
+      "showPostgresClusterResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PostgresCluster"
+          }
+        }
+      },
       "updateMetadataRequest": {
         "type": "object",
         "properties": {
@@ -7059,6 +9167,24 @@
           },
           "updated_at": {
             "type": "string"
+          }
+        }
+      },
+      "updatePostgresUserRoleRequest": {
+        "required": [
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "New role for the user.",
+            "example": "reader",
+            "enum": [
+              "schema_admin",
+              "writer",
+              "reader"
+            ]
           }
         }
       },
