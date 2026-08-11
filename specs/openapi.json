@@ -4620,8 +4620,8 @@
         "tags": [
           "Postgres Clusters"
         ],
-        "summary": "Restore Backup to New Cluster",
-        "description": "Restore a backup into a new Managed Postgres cluster. The source cluster is left unchanged, and a new cluster is provisioned from the specified backup.",
+        "summary": "Restore Backup or Point in Time to New Cluster",
+        "description": "Restore a backup, or a point in time within the cluster's PITR recovery window, into a new Managed Postgres cluster. The source cluster is left unchanged, and a new cluster is provisioned asynchronously.",
         "operationId": "Postgres_restore",
         "parameters": [
           {
@@ -4647,7 +4647,7 @@
         },
         "responses": {
           "201": {
-            "description": "New cluster provisioned from the backup",
+            "description": "New cluster provisioned from the backup or point in time",
             "content": {
               "application/json": {
                 "schema": {
@@ -4677,7 +4677,7 @@
             }
           },
           "422": {
-            "description": "backup_id is required",
+            "description": "A restore target is missing, both backup_id and pitr_time were supplied, point-in-time restore is outside the recovery window or unavailable, or name is invalid",
             "content": {
               "application/json": {
                 "schema": {
@@ -5343,6 +5343,9 @@
             "type": "string"
           },
           "network": {
+            "type": "string"
+          },
+          "network_cidr": {
             "type": "string"
           },
           "organization": {
@@ -8980,6 +8983,9 @@
           "longitude": {
             "type": "number"
           },
+          "mpg_available": {
+            "type": "boolean"
+          },
           "name": {
             "type": "string"
           },
@@ -9097,14 +9103,19 @@
         ]
       },
       "restorePostgresClusterRequest": {
-        "required": [
-          "backup_id"
-        ],
         "type": "object",
         "properties": {
           "backup_id": {
             "type": "string",
-            "description": "Backup label to restore from, as returned by the backups list."
+            "description": "Backup label to restore from, as returned by the backups list. Mutually exclusive with pitr_time."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name for the restored cluster. Defaults to a generated name derived from the source cluster and backup/point in time when omitted or blank."
+          },
+          "pitr_time": {
+            "type": "string",
+            "description": "Point in time to restore to, as an RFC3339 timestamp with an explicit offset from UTC (e.g. Z or +02:00). Normalized to UTC and must fall within the cluster's PITR recovery window. Mutually exclusive with backup_id."
           }
         }
       },
