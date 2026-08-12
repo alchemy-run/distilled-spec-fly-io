@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "https://api.machines.dev/v1"
+      "url": "https://api.machines.dev"
     }
   ],
   "tags": [
@@ -41,7 +41,7 @@
     }
   ],
   "paths": {
-    "/apps": {
+    "/v1/apps": {
       "get": {
         "tags": [
           "Apps"
@@ -118,7 +118,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}": {
+    "/v1/apps/{app_name}": {
       "get": {
         "tags": [
           "Apps"
@@ -176,7 +176,7 @@
         }
       }
     },
-    "/apps/{app_name}/certificates": {
+    "/v1/apps/{app_name}/certificates": {
       "get": {
         "tags": [
           "TLS Certificates"
@@ -232,7 +232,7 @@
         }
       }
     },
-    "/apps/{app_name}/certificates/acme": {
+    "/v1/apps/{app_name}/certificates/acme": {
       "post": {
         "tags": [
           "TLS Certificates"
@@ -286,7 +286,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/certificates/custom": {
+    "/v1/apps/{app_name}/certificates/custom": {
       "post": {
         "tags": [
           "TLS Certificates"
@@ -340,7 +340,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/certificates/{hostname}": {
+    "/v1/apps/{app_name}/certificates/{hostname}": {
       "get": {
         "tags": [
           "TLS Certificates"
@@ -414,7 +414,7 @@
         }
       }
     },
-    "/apps/{app_name}/certificates/{hostname}/acme": {
+    "/v1/apps/{app_name}/certificates/{hostname}/acme": {
       "delete": {
         "tags": [
           "TLS Certificates"
@@ -455,7 +455,7 @@
         }
       }
     },
-    "/apps/{app_name}/certificates/{hostname}/check": {
+    "/v1/apps/{app_name}/certificates/{hostname}/check": {
       "post": {
         "tags": [
           "TLS Certificates"
@@ -496,7 +496,7 @@
         }
       }
     },
-    "/apps/{app_name}/certificates/{hostname}/custom": {
+    "/v1/apps/{app_name}/certificates/{hostname}/custom": {
       "delete": {
         "tags": [
           "TLS Certificates"
@@ -537,7 +537,7 @@
         }
       }
     },
-    "/apps/{app_name}/deploy_token": {
+    "/v1/apps/{app_name}/deploy_token": {
       "post": {
         "tags": [
           "Apps"
@@ -581,7 +581,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/ip_assignments": {
+    "/v1/apps/{app_name}/ip_assignments": {
       "get": {
         "tags": [
           "Apps"
@@ -655,7 +655,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/ip_assignments/{ip}": {
+    "/v1/apps/{app_name}/ip_assignments/{ip}": {
       "delete": {
         "tags": [
           "Apps"
@@ -690,7 +690,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines": {
+    "/v1/apps/{app_name}/machines": {
       "get": {
         "tags": [
           "Machines"
@@ -809,7 +809,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/machines/{machine_id}": {
+    "/v1/apps/{app_name}/machines/{machine_id}": {
       "get": {
         "tags": [
           "Machines"
@@ -963,7 +963,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/cordon": {
+    "/v1/apps/{app_name}/machines/{machine_id}/cordon": {
       "post": {
         "tags": [
           "Machines"
@@ -999,7 +999,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/events": {
+    "/v1/apps/{app_name}/machines/{machine_id}/events": {
       "get": {
         "tags": [
           "Machines"
@@ -1052,7 +1052,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/exec": {
+    "/v1/apps/{app_name}/machines/{machine_id}/exec": {
       "post": {
         "tags": [
           "Machines"
@@ -1126,7 +1126,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/lease": {
+    "/v1/apps/{app_name}/machines/{machine_id}/lease": {
       "get": {
         "tags": [
           "Machines"
@@ -1271,7 +1271,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/memory": {
+    "/v1/apps/{app_name}/machines/{machine_id}/memory": {
       "get": {
         "tags": [
           "Machines"
@@ -1365,7 +1365,7 @@
         "x-codegen-request-body-name": "body"
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/memory/reclaim": {
+    "/v1/apps/{app_name}/machines/{machine_id}/memory/reclaim": {
       "post": {
         "tags": [
           "Machines"
@@ -1419,7 +1419,7 @@
         "x-codegen-request-body-name": "body"
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/metadata": {
+    "/v1/apps/{app_name}/machines/{machine_id}/metadata": {
       "get": {
         "tags": [
           "Machines"
@@ -1596,7 +1596,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/metadata/{key}": {
+    "/v1/apps/{app_name}/machines/{machine_id}/metadata/{key}": {
       "get": {
         "tags": [
           "Machines"
@@ -1765,7 +1765,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/ps": {
+    "/v1/apps/{app_name}/machines/{machine_id}/ps": {
       "get": {
         "tags": [
           "Machines"
@@ -1836,7 +1836,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/restart": {
+    "/v1/apps/{app_name}/machines/{machine_id}/restart": {
       "post": {
         "tags": [
           "Machines"
@@ -1907,7 +1907,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/signal": {
+    "/v1/apps/{app_name}/machines/{machine_id}/signal": {
       "post": {
         "tags": [
           "Machines"
@@ -1965,7 +1965,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/start": {
+    "/v1/apps/{app_name}/machines/{machine_id}/start": {
       "post": {
         "tags": [
           "Machines"
@@ -2001,7 +2001,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/stop": {
+    "/v1/apps/{app_name}/machines/{machine_id}/stop": {
       "post": {
         "tags": [
           "Machines"
@@ -2059,7 +2059,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/suspend": {
+    "/v1/apps/{app_name}/machines/{machine_id}/suspend": {
       "post": {
         "tags": [
           "Machines"
@@ -2095,7 +2095,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/uncordon": {
+    "/v1/apps/{app_name}/machines/{machine_id}/uncordon": {
       "post": {
         "tags": [
           "Machines"
@@ -2131,7 +2131,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/versions": {
+    "/v1/apps/{app_name}/machines/{machine_id}/versions": {
       "get": {
         "tags": [
           "Machines"
@@ -2176,7 +2176,7 @@
         }
       }
     },
-    "/apps/{app_name}/machines/{machine_id}/wait": {
+    "/v1/apps/{app_name}/machines/{machine_id}/wait": {
       "get": {
         "tags": [
           "Machines"
@@ -2276,7 +2276,7 @@
         }
       }
     },
-    "/apps/{app_name}/secretkeys": {
+    "/v1/apps/{app_name}/secretkeys": {
       "get": {
         "tags": [
           "Secrets"
@@ -2324,7 +2324,7 @@
         }
       }
     },
-    "/apps/{app_name}/secretkeys/{secret_name}": {
+    "/v1/apps/{app_name}/secretkeys/{secret_name}": {
       "get": {
         "tags": [
           "Secrets"
@@ -2473,7 +2473,7 @@
         }
       }
     },
-    "/apps/{app_name}/secretkeys/{secret_name}/decrypt": {
+    "/v1/apps/{app_name}/secretkeys/{secret_name}/decrypt": {
       "post": {
         "tags": [
           "Secrets"
@@ -2544,7 +2544,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/secretkeys/{secret_name}/encrypt": {
+    "/v1/apps/{app_name}/secretkeys/{secret_name}/encrypt": {
       "post": {
         "tags": [
           "Secrets"
@@ -2615,7 +2615,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/secretkeys/{secret_name}/generate": {
+    "/v1/apps/{app_name}/secretkeys/{secret_name}/generate": {
       "post": {
         "tags": [
           "Secrets"
@@ -2678,7 +2678,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/secretkeys/{secret_name}/sign": {
+    "/v1/apps/{app_name}/secretkeys/{secret_name}/sign": {
       "post": {
         "tags": [
           "Secrets"
@@ -2749,7 +2749,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/secretkeys/{secret_name}/verify": {
+    "/v1/apps/{app_name}/secretkeys/{secret_name}/verify": {
       "post": {
         "tags": [
           "Secrets"
@@ -2814,7 +2814,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/secrets": {
+    "/v1/apps/{app_name}/secrets": {
       "get": {
         "tags": [
           "Secrets"
@@ -2914,7 +2914,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/secrets/{secret_name}": {
+    "/v1/apps/{app_name}/secrets/{secret_name}": {
       "get": {
         "tags": [
           "Secrets"
@@ -3071,7 +3071,7 @@
         }
       }
     },
-    "/apps/{app_name}/volumes": {
+    "/v1/apps/{app_name}/volumes": {
       "get": {
         "tags": [
           "Volumes"
@@ -3158,7 +3158,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/volumes/{volume_id}": {
+    "/v1/apps/{app_name}/volumes/{volume_id}": {
       "get": {
         "tags": [
           "Volumes"
@@ -3302,7 +3302,7 @@
         }
       }
     },
-    "/apps/{app_name}/volumes/{volume_id}/extend": {
+    "/v1/apps/{app_name}/volumes/{volume_id}/extend": {
       "put": {
         "tags": [
           "Volumes"
@@ -3356,7 +3356,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/apps/{app_name}/volumes/{volume_id}/snapshots": {
+    "/v1/apps/{app_name}/volumes/{volume_id}/snapshots": {
       "get": {
         "tags": [
           "Volumes"
@@ -3435,7 +3435,7 @@
         }
       }
     },
-    "/orgs/{org_slug}/machines": {
+    "/v1/orgs/{org_slug}/machines": {
       "get": {
         "tags": [
           "Organizations"
@@ -3524,7 +3524,7 @@
         }
       }
     },
-    "/orgs/{org_slug}/volumes": {
+    "/v1/orgs/{org_slug}/volumes": {
       "get": {
         "tags": [
           "Organizations"
@@ -3613,7 +3613,7 @@
         }
       }
     },
-    "/platform/placements": {
+    "/v1/platform/placements": {
       "post": {
         "tags": [
           "Platform"
@@ -3647,7 +3647,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/platform/regions": {
+    "/v1/platform/regions": {
       "get": {
         "tags": [
           "Platform"
@@ -3669,7 +3669,7 @@
         }
       }
     },
-    "/postgres": {
+    "/v1/postgres": {
       "get": {
         "tags": [
           "Postgres Clusters"
@@ -3792,7 +3792,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}": {
+    "/v1/postgres/{postgres_cluster_id}": {
       "get": {
         "tags": [
           "Postgres Clusters"
@@ -3880,7 +3880,7 @@
         }
       }
     },
-    "/postgres/{postgres_cluster_id}/attachments": {
+    "/v1/postgres/{postgres_cluster_id}/attachments": {
       "post": {
         "tags": [
           "Postgres Clusters"
@@ -3955,7 +3955,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}/attachments/{app_name}": {
+    "/v1/postgres/{postgres_cluster_id}/attachments/{app_name}": {
       "delete": {
         "tags": [
           "Postgres Clusters"
@@ -4011,7 +4011,7 @@
         }
       }
     },
-    "/postgres/{postgres_cluster_id}/backups": {
+    "/v1/postgres/{postgres_cluster_id}/backups": {
       "get": {
         "tags": [
           "Postgres Clusters"
@@ -4111,7 +4111,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}/databases": {
+    "/v1/postgres/{postgres_cluster_id}/databases": {
       "get": {
         "tags": [
           "Postgres Clusters"
@@ -4227,7 +4227,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}/databases/{database_name}": {
+    "/v1/postgres/{postgres_cluster_id}/databases/{database_name}": {
       "delete": {
         "tags": [
           "Postgres Clusters"
@@ -4289,7 +4289,7 @@
         }
       }
     },
-    "/postgres/{postgres_cluster_id}/databases/{database_name}/extensions": {
+    "/v1/postgres/{postgres_cluster_id}/databases/{database_name}/extensions": {
       "get": {
         "tags": [
           "Postgres Clusters"
@@ -4437,7 +4437,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}/databases/{database_name}/extensions/{extension_name}": {
+    "/v1/postgres/{postgres_cluster_id}/databases/{database_name}/extensions/{extension_name}": {
       "delete": {
         "tags": [
           "Postgres Clusters"
@@ -4520,7 +4520,7 @@
         }
       }
     },
-    "/postgres/{postgres_cluster_id}/fork": {
+    "/v1/postgres/{postgres_cluster_id}/fork": {
       "post": {
         "tags": [
           "Postgres Clusters"
@@ -4615,7 +4615,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}/restore": {
+    "/v1/postgres/{postgres_cluster_id}/restore": {
       "post": {
         "tags": [
           "Postgres Clusters"
@@ -4690,7 +4690,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}/users": {
+    "/v1/postgres/{postgres_cluster_id}/users": {
       "get": {
         "tags": [
           "Postgres Clusters"
@@ -4816,7 +4816,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}/users/{username}": {
+    "/v1/postgres/{postgres_cluster_id}/users/{username}": {
       "delete": {
         "tags": [
           "Postgres Clusters"
@@ -4948,7 +4948,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/postgres/{postgres_cluster_id}/users/{username}/credentials": {
+    "/v1/postgres/{postgres_cluster_id}/users/{username}/credentials": {
       "get": {
         "tags": [
           "Postgres Clusters"
@@ -5010,7 +5010,7 @@
         }
       }
     },
-    "/postgres/{postgres_cluster_id}/users/{username}/rotate_password": {
+    "/v1/postgres/{postgres_cluster_id}/users/{username}/rotate_password": {
       "post": {
         "tags": [
           "Postgres Clusters"
@@ -5104,7 +5104,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/tokens/authenticate": {
+    "/v1/tokens/authenticate": {
       "post": {
         "tags": [
           "Tokens"
@@ -5151,7 +5151,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/tokens/authorize": {
+    "/v1/tokens/authorize": {
       "post": {
         "tags": [
           "Tokens"
@@ -5205,7 +5205,7 @@
         "x-codegen-request-body-name": "request"
       }
     },
-    "/tokens/current": {
+    "/v1/tokens/current": {
       "get": {
         "tags": [
           "Tokens"
@@ -5247,7 +5247,7 @@
         }
       }
     },
-    "/tokens/kms": {
+    "/v1/tokens/kms": {
       "post": {
         "tags": [
           "Tokens"
@@ -5269,7 +5269,7 @@
         }
       }
     },
-    "/tokens/oidc": {
+    "/v1/tokens/oidc": {
       "post": {
         "tags": [
           "Tokens"
