@@ -6199,6 +6199,10 @@
           "container": {
             "type": "string"
           },
+          "machine": {
+            "type": "boolean",
+            "description": "Machine runs the command in the machine's own namespace instead of in a\ncontainer. It is mutually exclusive with Container."
+          },
           "stdin": {
             "type": "string"
           },
