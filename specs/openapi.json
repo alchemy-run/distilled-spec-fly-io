@@ -113,6 +113,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Rejected by validation. status is name_taken when the app name is already in use.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         },
         "x-codegen-request-body-name": "request"
@@ -9010,11 +9020,13 @@
         "type": "string",
         "enum": [
           "unknown",
-          "insufficient_capacity"
+          "insufficient_capacity",
+          "name_taken"
         ],
         "x-enum-varnames": [
           "unknown",
-          "capacityErr"
+          "capacityErr",
+          "nameTakenErr"
         ]
       },
       "main.tokenInfo": {
